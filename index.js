@@ -1,17 +1,16 @@
-const epxress = require('express')
+//include express
+const express = require('express');
 
-const serveStatic = require('serve-static');
+//api routes
+const postApi = require('./postAPIRoutes');
 
-const postApi = require('./apiRoutes');
-
+// create an express application
 const app = express();
 
-app.use('/', serveStatic('public', {
-	'index': ['index.html']
-}));
+// use post api routes
+app.use('/post', postApi);
 
-app.use('/api', postApi);
-
-app.listen(3000, ()=> {
-	console.log('Example app listening on port 3000!');
+//have the application listen on a specific port
+app.listen(3000, () =>{
+	console.log(' Example app listening on port 3000');
 });
