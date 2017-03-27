@@ -8,7 +8,7 @@ const postApi = require('./postAPIRoutes');
 const app = express();
 
 // use post api routes
-app.use('/post', postApi);
+app.use('/', express.static('public'));
 
 //have the application listen on a specific port
 app.listen(3000, () =>{

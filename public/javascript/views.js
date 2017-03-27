@@ -1,4 +1,4 @@
-window.Views = (function) {
+window.Views = (function() {
 	const_views = {};
 	const classMethods = (el, className, methodName) => {
 		if (!el.length) {

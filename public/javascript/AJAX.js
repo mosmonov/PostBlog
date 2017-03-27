@@ -1,4 +1,4 @@
-window.ajax=(function) {
+window.ajax=(function() {
 	function GET(url) {
 		return new Promise((resolve, reject) => {
 			const request = new XMLHttpRequest();
@@ -13,7 +13,7 @@ window.ajax=(function) {
 			request.send() 
 		});
 	} //GET
-	function POST(url, data) =>{
+	function POST(url, data) {
 		return new Promise((resolve, reject) => {
 			const request = new XMLHttpRequest();
 			request.open('POST', url);

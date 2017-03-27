@@ -51,6 +51,14 @@
 		});
 	} // POST
 
+	if (document.querySelector('.js-admin') != null) {
+		// put the render function that you want to run for th admin page in here.
+	}
+
+	if (document.querySelector('.js-homepage') != null) {
+		// put the render function that you want to run for th home page in here.
+	}
+
 	function render(todoItems) {
 		const container = document.querySelector('.js-todolist');
 		container.innerHTML = '';
@@ -124,13 +132,4 @@ No todoitems!
 
 })();
 
-/*
-	return POST('/api/todos', {
-			todo: 'wake up',
-			when: new Date().getTime() + 9 * 60 * 60 * 1000
-		});
-	.then((dataFromPostLOL) => {
-		console.log(dataFromPostLOL);
-	});
-*/
 
