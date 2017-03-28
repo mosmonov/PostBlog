@@ -60,7 +60,7 @@
 	}
 
 	function render(todoItems) {
-		const container = document.querySelector('.js-todolist');
+		const container = document.querySelector('.js-postlist');
 		container.innerHTML = '';
 		for (const todoItem of todoItems) {
 			const li = document.createElement('li');
@@ -90,7 +90,7 @@ ${todoItem.data.todo}
 					isDone = true;
 				}
 
-				PUT('/api/todo/' + todoItem.id, {isDone})
+				PUT('/api/post/' + todoItem.id, {isDone})
 					.then((data) => {
 						render(data);
 					})
@@ -111,7 +111,7 @@ No todoitems!
 	} // render
 
 
-	GET('/api/todos')
+	GET('/api/posts')
 		.then((todoItems) => {
 			render(todoItems);
 		});
@@ -120,7 +120,7 @@ No todoitems!
 		const input = document.querySelector('.js-todo-text');
 		input.setAttribute('disabled', 'disabled');
 
-		POST('/api/todos', {
+		POST('/api/posts', {
 			todo: input.value,
 			when: new Date().getTime() + 9 * 60 * 60 * 1000
 		}).then((data) => {

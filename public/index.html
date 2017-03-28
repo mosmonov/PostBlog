@@ -4,7 +4,7 @@
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Todo List</title>
-    <link rel='stylesheet' href='styles/main.css'>
+    <link rel='stylesheet' href='styles/admin.css'>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -13,64 +13,76 @@
 
     <link rel='stylesheet' href='styles/main.css'>
 </head>
-<body id="todoapp">
 
-    <!-- NAV BAR -->
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
+<div id="throbber" style="display:none; min-height:120px;"></div>
+<div id="noty-holder"></div>
+<div id="wrapper">
+
+     <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">
-            <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-          </a>
-        </div><!-- navbar-header -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li><a href="#/admin">Admin</a></li>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img src="/" alt="LOGO">
+            </a>
+        </div>
+        <!-- Top Menu Items -->
+        <ul class="nav navbar-right top-nav">
+            <li><a href="#" data-placement="bottom" data-toggle="tooltip" data-original-title="Stats"><i class="fa fa-bar-chart-o"></i>
+                </a>
+            </li>            
+            <li class="dropdown">
+                <a href="admin.html" class="dropdown-toggle" data-toggle="dropdown">Admin User <b class="fa fa-angle-down"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#"><i class="fa fa-fw fa-user"></i> Edit Profile</a></li>
+                    <li><a href="#"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav side-nav">
+                <li>
+                    <a href="index.html" data-toggle="collapse" data-target="#submenu-1"><i class="fa fa-home"></i> Home Page <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+                    <a href="admin.html"><i class="fa fa-angle-double-right"></i> Admin </a>
+                      
+                </li>
             </ul>
-        </div><!-- navbar-collapse -->
-      </div><!-- container-fluid -->
-    </nav><!-- nav -->
+          
+        <!-- /.navbar-collapse -->
+    </nav>
+        
+        
+      <div id="page-wrapper">  
+    <div class="container-fluid">
+        
+      <!-- Page Heading -->
+            <div class="row" id="main" >
+                <div class="col-sm-12 col-md-12 well" id="content">
+                    <h1>Welcome Word!</h1>
+                </div>
+            </div>
+            <!-- /.row -->   
+        
+ 
+  
+    <!-- /#wrapper -->
 
-    <!-- BODY -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-2 todo-col"></div>
-            <div class="col-md-8 todo-col">
-
-                <div class="view js-post view-hide">
-
-                </div><!-- view js-post -->
-
-                <div class="view js-feed view-hide">
-                    <ul class="list-group js-todolist">
-                        <li class="list-group-item">
-                            <span class="glyphicon glyphicon-refresh todo-spinner"></span>
-                        </li>
-                    </ul>
-                </div><!-- view js-feed -->
-
-                <div class="view js-admin view-hide">
-                    <div class="input-group">
-                            <input type="text" class="form-control js-post-title" placeholder="Recipient's username" aria-describedby="basic-addon2">
-                            <input type="text" class="form-control js-post-author" placeholder="Recipient's username" aria-describedby="basic-addon2">
-                            <textarea class="form-control js-post-body" placeholder="Recipient's username" aria-describedby="basic-addon2"></textarea>
-                    </div><!-- js-add-todo -->
-                    <div class="input-group">
-                        <span class="input-group-addon todo-addbtn js-add-todo" id="basic-addon2">Add Todo</span>
-                    </div>
-                </div><!-- view js-admin -->
-
-            </div><!-- content -->
-            <div class="col-md-2 todo-col"></div>
-        </div><!-- row -->
-    </div><!-- container -->
-
-    <!-- Latest compiled and minified JavaScript -->
-    <!-- <script src='javascript/main.js'></script> -->
-<!--     <script src="javascript/flatiron.min.js"></script>
- --><script src="javascript/router.js"></script>
-    <script src="javascript/AJAX.js"></script>
-    <script src="javascript/views.js"></script>
-    <script src="javascript/app.js"></script>
-</body>
+ </div>
+</div>  
+    <!-- /#page-wrapper -->
+</div><!-- /#wrapper -->
 </html>
+	
+	
+	
+	
+	
