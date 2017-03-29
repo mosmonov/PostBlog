@@ -10,6 +10,8 @@ const app = express();
 // use post api routes
 app.use('/', express.static('./public'));
 
+app.use('/api', postApi);
+
 //have the application listen on a specific port
 app.listen(3000, () =>{
 	console.log(' Example app listening on port 3000');

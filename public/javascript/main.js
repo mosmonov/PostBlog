@@ -51,84 +51,134 @@
 		});
 	} // POST
 
-	if (document.querySelector('.js-admin') != null) {
-		// put the render function that you want to run for th admin page in here.
-	}
+	// if (document.querySelector('.js-admin') != null) {
+	// 	// put the render function that you want to run for th admin page in here.
+	// }
 
-	if (document.querySelector('.js-homepage') != null) {
-		// put the render function that you want to run for th home page in here.
-	}
+	// if (document.querySelector('.js-homepage') != null) {
+	// 	// put the render function that you want to run for th home page in here.
+	// }
 
-	function render(todoItems) {
+	function render(postItems) {
 		const container = document.querySelector('.js-postlist');
 		container.innerHTML = '';
-		for (const todoItem of todoItems) {
-			const li = document.createElement('li');
+		for (const postItem of postItems) {
+			const h4 = document.createElement('h4');
+			h4.innerHTML = `
+                <span class="js-title-text">${postItem.data.post}</span>    
+			`;
+		const editBtn = document.createElement('button');
+			editBtn.classList.add('glyphicon', 'glyphicon-edit', 'js-edit');
+			editBtn.style.float = 'right';
+
+
+			const closeBtn = document.createElement('button');
+			closeBtn.classList.add('glyphicon', 'glyphicon-remove', 'js-remove');
+			closeBtn.style.float = 'right';
+
+
+			h4.appendChild(closeBtn);
+			h4.appendChild(editBtn);
+
+
+			h4.classList.add('list-group-item', 'postlist-item');
+
+			container.appendChild(h4);
+
+			const li = document.createElement('div');
 			li.innerHTML = `
-${todoItem.data.todo}
+                     <div  class="js-content-text">${postItem.data.postText}</div>  
 			`;
 
-			if (todoItem.data.isDone) {
-				li.innerHTML += `<span class="glyphicon glyphicon-check todolist-icon js-todo-check green"></span>`
-			}
-			else {
-				li.innerHTML += `<span class="glyphicon glyphicon-unchecked todolist-icon js-todo-check"></span>`
-			}
 
+			li.classList.add('list-group-item', 'postlist-item');
 
-			li.classList.add('list-group-item', 'todolist-item');
+			// const textarea = 
 
-			container.appendChild(li);
-			
-			li.querySelector('.js-todo-check').addEventListener('click', (e) => {
-				console.log(todoItem);
-				let isDone;
-				if (todoItem.data.isDone) {
-					isDone = false;
-				}
-				else {
-					isDone = true;
-				}
+			const div = document.createElement('div');
+			div.appendChild(h4);
+			div.appendChild(li);
+			container.appendChild(div);
 
-				PUT('/api/post/' + todoItem.id, {isDone})
-					.then((data) => {
-						render(data);
-					})
-					.catch((e) => {
-						alert(e)
-					})
+			const editDiv = document.createElement('div');
+			editDiv.innerHTML = `
+				<h4 class="list-group-item postlist-item">
+					<input type="text" style="border: none;" class="js-title-text-edit" value="${postItem.data.post}" />
+				</h4>
+				<div class='list-group-item postlist-item'>
+					<textarea class="js-content-text-edit">${postItem.data.postText}</textarea>
+				</div>
+			`;
+			editDiv.style.display = 'none';
+
+			const saveBtn = document.createElement('button');
+			saveBtn.classList.add('glyphicon', 'glyphicon-check', 'js-save');
+			saveBtn.style.float = 'right';
+
+			editDiv.querySelector('.postlist-item').appendChild(saveBtn)
+
+			div.appendChild(editDiv);
+
+			closeBtn.addEventListener('click', (e) => {
+				DELETE('/api/post/' + postItem.id).then((data) => {
+					console.log('delete complete')
+					render(data)
+				});
+			});
+
+			editBtn.addEventListener('click', (e) => {
+				editDiv.style.display = 'post';
+				h4.style.display = 'none';
+				li.style.display = 'none';
+
+			});
+
+			saveBtn.addEventListener('click', (e) => {
+				PUT('/api/post/' + postItem.id, {
+					post: editDiv.querySelector('.js-title-text-edit').value,
+					postText: editDiv.querySelector('.js-content-text-edit').value
+				}).then((data) => {
+					console.log('delete complete')
+					render(data)
+				});
 			})
-			
 		}
 
-		if (todoItems.length === 0) {
+		if (postItems.length === 0) {
 			container.innerHTML = `
-<li class="list-group-item">
-No todoitems!
-</li>
+			<li class="list-group-item">
+			No postItems!
+			</li>
 			`;
 		}
 	} // render
 
 
-	GET('/api/posts')
-		.then((todoItems) => {
-			render(todoItems);
+	GET('/api/post')
+		.then((postItems) => {
+			render(postItems);
 		});
 
-	document.querySelector('.js-add-todo').addEventListener('click', (e) => {
-		const input = document.querySelector('.js-todo-text');
+	document.querySelector('.js-add-post').addEventListener('click', (e) => {
+		const input = document.querySelector('.js-post-text');
+		const textInput = document.querySelector('.js-post-body-text');
 		input.setAttribute('disabled', 'disabled');
 
-		POST('/api/posts', {
-			todo: input.value,
+		POST('/api/post', {
+			post: input.value,
+			postText: textInput.value,
 			when: new Date().getTime() + 9 * 60 * 60 * 1000
 		}).then((data) => {
 			input.removeAttribute('disabled');
 			input.value = '';
+			textInput.removeAttribute('disabled');
+			textInput.value = '';
 			render(data);
 		});
+
+		
 	})
+
 
 })();
 

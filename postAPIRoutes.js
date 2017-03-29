@@ -5,7 +5,7 @@ const router = express.Router();
 //pull in Post model
 const Post = require('./post')
 
-router.get('/', (request, response, next) => {
+router.get('/post', (request, response, next) => {
 	response.header('Content-Type', 'application/json');
 	Post.get()
 		.then((posts) => response.send(posts))
@@ -13,7 +13,10 @@ router.get('/', (request, response, next) => {
 });
 // ^^ next is functioning in the same way as err does? next access to the next middleware?
 
-router.post('/', (request, response, next) => {
+router.post('/post', (request, response, next) => {
+
+	const id = parseInt(request.params.id, 10);
+
 	const payload = request.body;
 
 	response.header('Content-Type', 'application/json');
@@ -22,7 +25,9 @@ router.post('/', (request, response, next) => {
 		.catch(next)
 });
 
-router.delete('/', (request, response, next) => {
+router.delete('/post', (request, response, next) => {
+	const id = parseInt(request.params.id, 10);
+
 	const payload = request.body;
 
 	response.header('Content-Type', 'application/json');
@@ -31,7 +36,10 @@ router.delete('/', (request, response, next) => {
 		.catch(next)
 });
 
-router.put('/', (request, response, next) => {
+router.put('/post/:id', (request, response, next) => {
+
+	const id = parseInt(request.params.id, 10);
+
 	const payload = request.body;
 
 	response.header('Content-Type', 'application/json');
