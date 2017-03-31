@@ -2,55 +2,73 @@ const express = require('express');
 
 const router = express.Router();
 
-//pull in Post model
-const Post = require('./post')
+const postList = require('./postList')
 
-router.get('/post', (request, response, next) => {
-	response.header('Content-Type', 'application/json');
-	Post.get()
-		.then((posts) => response.send(posts))
-		.catch(next)
+
+// body parser middleware
+const parser = require('body-parser');
+
+//parses requests with the content type of `application/json`
+router.use(parser.json());
+
+//define a route on `/hello/world`
+router.get('/post',(request, response, next) => {
+	next();
 });
-// ^^ next is functioning in the same way as err does? next access to the next middleware?
 
+
+
+// post blog
 router.post('/post', (request, response, next) => {
+	const requestBody = request.body;
 
-	const id = parseInt(request.params.id, 10);
+	// Add a post
+	postList.createItem(requestBody);
 
-	const payload = request.body;
+	next();
 
-	response.header('Content-Type', 'application/json');
-	Post.create(payload)
-		.then((post) => response.send(post))
-		.catch(next)
 });
 
-router.delete('/post', (request, response, next) => {
-	const id = parseInt(request.params.id, 10);
 
-	const payload = request.body;
 
-	response.header('Content-Type', 'application/json');
-	Post.remove(payload)
-		.then((post) => response.send(post))
-		.catch(next)
-});
-
+// put blog
 router.put('/post/:id', (request, response, next) => {
+	// console.log('HERE')
+	const id = parseInt(request.params.id, 10);
+	const dataPayload = request.body;
 
+	postList.setItem(id, 'data.post', dataPayload.post);
+	postList.setItem(id, 'data.postText', dataPayload.postText);
+	next();
+}); // blog
+ 
+
+// delete blog
+router.delete('/post/:id', (request, response, next) => {
 	const id = parseInt(request.params.id, 10);
 
-	const payload = request.body;
+	postList.removeItem(id);
 
+	next();
+}); 
+
+// delete
+
+router.use((request, response) => {
 	response.header('Content-Type', 'application/json');
-	Post.set(payload)
-		.then((post) => response.send(post))
-		.catch(next)
+
+	const promise = postList.getItems()
+	promise.then((res) => {
+		response.send(res);	
+	})
 });
 
-//handle errors
-router.use(function (err, req, res, next) {
-	
-})
 
-module.exports=router;	
+
+
+module.exports = router;
+
+
+
+
+

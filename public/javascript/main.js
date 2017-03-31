@@ -49,113 +49,137 @@
 
 			request.send(JSON.stringify(data));
 		});
-	} // POST
+	} // PUT
 
-	// if (document.querySelector('.js-admin') != null) {
-	// 	// put the render function that you want to run for th admin page in here.
-	// }
+	function DELETE(url, data) {
+		return new Promise((resolve, reject) => {
+			const request = new XMLHttpRequest();
+			request.open('DELETE', url);
+			request.setRequestHeader('Content-Type', 'application/json');
 
-	// if (document.querySelector('.js-homepage') != null) {
-	// 	// put the render function that you want to run for th home page in here.
-	// }
+			request.onload = () => {
+				const data = JSON.parse(request.responseText);
+				resolve(data)
+			}; 
+			request.onerror = (err) => {
+				reject(err)
+			};
+
+			request.send(JSON.stringify(data));
+		});
+	} // DELETE
+
+
+	
 
 	function render(postItems) {
+		return new Promise((resolve, reject) => {
 		const container = document.querySelector('.js-postlist');
 		container.innerHTML = '';
 		for (const postItem of postItems) {
+			// console.log(postItem)
 			const h4 = document.createElement('h4');
 			h4.innerHTML = `
-                <span class="js-title-text">${postItem.data.post}</span>    
+                <span class="js-title-text">${postItem.data.post}</span> 
 			`;
-		const editBtn = document.createElement('button');
-			editBtn.classList.add('glyphicon', 'glyphicon-edit', 'js-edit');
-			editBtn.style.float = 'right';
+			if (document.querySelector('.admin') !== null) {
+			    
+			    const editBtn = document.createElement('button');
+						editBtn.classList.add('glyphicon', 'glyphicon-edit', 'js-edit');
+						editBtn.style.float = 'right';
+
+				const closeBtn = document.createElement('button');
+						closeBtn.classList.add('glyphicon', 'glyphicon-remove', 'js-remove');
+						closeBtn.style.float = 'right';
 
 
-			const closeBtn = document.createElement('button');
-			closeBtn.classList.add('glyphicon', 'glyphicon-remove', 'js-remove');
-			closeBtn.style.float = 'right';
+				h4.appendChild(closeBtn);
+				h4.appendChild(editBtn);
 
 
-			h4.appendChild(closeBtn);
-			h4.appendChild(editBtn);
+				h4.classList.add('list-group-item', 'postlist-item');
+
+				container.appendChild(h4);
+
+				const li = document.createElement('div');
+				li.innerHTML = `
+	                     <div  class="js-content-text">${postItem.data.postText}</div>  
+				`;
 
 
-			h4.classList.add('list-group-item', 'postlist-item');
+				li.classList.add('list-group-item', 'postlist-item');
 
-			container.appendChild(h4);
+				// const textarea = 
 
-			const li = document.createElement('div');
-			li.innerHTML = `
-                     <div  class="js-content-text">${postItem.data.postText}</div>  
-			`;
+				const div = document.createElement('div');
+				div.appendChild(h4);
+				div.appendChild(li);
+				container.appendChild(div);
 
+				const editDiv = document.createElement('div');
+				editDiv.innerHTML = `
+					<h4 class="list-group-item postlist-item">
+						<input type="text" style="border: none;" class="js-title-text-edit" value="${postItem.data.post}" />
+					</h4>
+					<div class='list-group-item postlist-item'>
+						<textarea class="js-content-text-edit">${postItem.data.postText}</textarea>
+					</div>
+				`;
+				editDiv.style.display = 'none';
 
-			li.classList.add('list-group-item', 'postlist-item');
+				const saveBtn = document.createElement('button');
+				saveBtn.classList.add('glyphicon', 'glyphicon-check', 'js-save');
+				saveBtn.style.float = 'right';
+			
+				editDiv.querySelector('.postlist-item').appendChild(saveBtn)
 
-			// const textarea = 
+				div.appendChild(editDiv);
 
-			const div = document.createElement('div');
-			div.appendChild(h4);
-			div.appendChild(li);
-			container.appendChild(div);
-
-			const editDiv = document.createElement('div');
-			editDiv.innerHTML = `
-				<h4 class="list-group-item postlist-item">
-					<input type="text" style="border: none;" class="js-title-text-edit" value="${postItem.data.post}" />
-				</h4>
-				<div class='list-group-item postlist-item'>
-					<textarea class="js-content-text-edit">${postItem.data.postText}</textarea>
-				</div>
-			`;
-			editDiv.style.display = 'none';
-
-			const saveBtn = document.createElement('button');
-			saveBtn.classList.add('glyphicon', 'glyphicon-check', 'js-save');
-			saveBtn.style.float = 'right';
-
-			editDiv.querySelector('.postlist-item').appendChild(saveBtn)
-
-			div.appendChild(editDiv);
-
-			closeBtn.addEventListener('click', (e) => {
-				DELETE('/api/post/' + postItem.id).then((data) => {
-					console.log('delete complete')
-					render(data)
+				closeBtn.addEventListener('click', (e) => {
+					console.log("close")
+					DELETE('/post/' + postItem.id).then((data) => {
+						console.log('delete complete')
+						render(data)
+					});
 				});
-			});
 
-			editBtn.addEventListener('click', (e) => {
-				editDiv.style.display = 'post';
-				h4.style.display = 'none';
-				li.style.display = 'none';
+				editBtn.addEventListener('click', (e) => {
+					// PUT('/api/post/' + postItem.id).then((data) => {
+					// 	console.log('delete complete')
+					// 	render(data)
+					// });
+					console.log("edit")
+					editDiv.style.display = 'block';
+					h4.style.display = 'none';
+					li.style.display = 'none';
 
-			});
-
-			saveBtn.addEventListener('click', (e) => {
-				PUT('/api/post/' + postItem.id, {
-					post: editDiv.querySelector('.js-title-text-edit').value,
-					postText: editDiv.querySelector('.js-content-text-edit').value
-				}).then((data) => {
-					console.log('delete complete')
-					render(data)
 				});
-			})
-		}
+				saveBtn.addEventListener('click', (e) => {
+						PUT('/post/' + postItem.id, {
+							post: editDiv.querySelector('.js-title-text-edit').value,
+							postText: editDiv.querySelector('.js-content-text-edit').value
+						}).then((data) => {
+							// console.log('delete complete')
+							render(data)
+						});
+					})
+			}
 
-		if (postItems.length === 0) {
-			container.innerHTML = `
-			<li class="list-group-item">
-			No postItems!
-			</li>
-			`;
-		}
-	} // render
+			if (postItems.length === 0) {
+				container.innerHTML = `
+				<li class="list-group-item">
+				No postItems!
+				</li>
+				`;
+			}
+		}	
+	}); // render
+}
 
 
-	GET('/api/post')
+	GET('/post')
 		.then((postItems) => {
+			// console.log(postItems)
 			render(postItems);
 		});
 
@@ -164,7 +188,7 @@
 		const textInput = document.querySelector('.js-post-body-text');
 		input.setAttribute('disabled', 'disabled');
 
-		POST('/api/post', {
+		POST('/post', {
 			post: input.value,
 			postText: textInput.value,
 			when: new Date().getTime() + 9 * 60 * 60 * 1000
@@ -176,9 +200,16 @@
 			render(data);
 		});
 
-		
-	})
+	});
 
+	if (document.querySelector('.homepage') !== null) {
+		GET('/post')
+		.then((postItems) => {
+			render(postItems).then((data) => {
+
+			});
+		});
+	}
 
 })();
 

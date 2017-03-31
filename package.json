@@ -18,6 +18,8 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "express-session": "^1.15.2",
+    "express-static": "^1.1.0",
     "lowdb": "^0.16.0",
     "supervisor": "^0.12.0"
   },
