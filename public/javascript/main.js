@@ -83,6 +83,13 @@
                 <span class="js-title-text">${postItem.data.post}</span> 
 			`;
 			if (document.querySelector('.admin') !== null) {
+				if (postItems.length === 0) {
+				container.innerHTML = `
+				<li class="list-group-item">
+				No postItems!
+				</li>
+				`;
+			}
 			    
 			    const editBtn = document.createElement('button');
 						editBtn.classList.add('glyphicon', 'glyphicon-edit', 'js-edit');
@@ -163,18 +170,13 @@
 							render(data)
 						});
 					})
-			}
+			
 
-			if (postItems.length === 0) {
-				container.innerHTML = `
-				<li class="list-group-item">
-				No postItems!
-				</li>
-				`;
-			}
-		}	
-	}); // render
-}
+			
+		 } // admin conditional st
+		} // for of items	
+	}); // Promise
+} //render
 
 
 	GET('/post')
@@ -206,9 +208,11 @@
 		GET('/post')
 		.then((postItems) => {
 			render(postItems).then((data) => {
-
+				console.log(postItems)
 			});
 		});
+		const inputField = document.querySelector('.input-group');
+		inputField.style.display = 'none';
 	}
 
 })();
